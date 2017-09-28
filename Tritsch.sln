@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OurChat", "OurChat\OurChat.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{577D5812-2D01-405E-833D-B8987F76DF64}"
 	ProjectSection(SolutionItems) = preProject
-		OurChat.MD = OurChat.MD
+		README.MD = README.MD
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OurChat.Messaging", "OurChat.Messaging\OurChat.Messaging.csproj", "{60B57963-B324-4469-8148-F558171454D8}"
