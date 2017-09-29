@@ -1,4 +1,6 @@
-﻿namespace OurChat {
+﻿using System;
+
+namespace OurChat {
     partial class OCForm {
         /// <summary>
         /// 必需的设计器变量。
@@ -27,9 +29,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OCForm));
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.toolStripLeftPanel = new System.Windows.Forms.ToolStrip();
-            this.cmdIcon = new System.Windows.Forms.ToolStripButton();
+            this.cmdPortrait = new System.Windows.Forms.ToolStripButton();
+            this.cmdChatUI = new System.Windows.Forms.ToolStripButton();
+            this.cmdGroup = new System.Windows.Forms.ToolStripButton();
+            this.cmdSettings = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanelChatArea = new System.Windows.Forms.TableLayoutPanel();
             this.splitContainerChat = new System.Windows.Forms.SplitContainer();
+            this.chatUI = new OurChat.ChatUI();
             this.tableLayoutInputPanel = new System.Windows.Forms.TableLayoutPanel();
             this.cmdSend = new System.Windows.Forms.Button();
             this.flowLayoutPanelSysmenu = new System.Windows.Forms.FlowLayoutPanel();
@@ -42,7 +48,7 @@
             this.imgContainer16x16 = new System.Windows.Forms.ImageList(this.components);
             this.imgContainer32x32 = new System.Windows.Forms.ImageList(this.components);
             this.imgContainer64x64 = new System.Windows.Forms.ImageList(this.components);
-            this.chatUI = new OurChat.ChatUI();
+            this.imgContainer48x48 = new System.Windows.Forms.ImageList(this.components);
             this.tableLayoutPanelMain.SuspendLayout();
             this.toolStripLeftPanel.SuspendLayout();
             this.tableLayoutPanelChatArea.SuspendLayout();
@@ -77,26 +83,60 @@
             // 
             this.toolStripLeftPanel.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.toolStripLeftPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripLeftPanel.GripMargin = new System.Windows.Forms.Padding(2, 2, 2, 12);
-            this.toolStripLeftPanel.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.toolStripLeftPanel.GripMargin = new System.Windows.Forms.Padding(0, 0, 0, 12);
+            this.toolStripLeftPanel.ImageScalingSize = new System.Drawing.Size(48, 48);
             this.toolStripLeftPanel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmdIcon});
+            this.cmdPortrait,
+            this.cmdChatUI,
+            this.cmdGroup,
+            this.cmdSettings});
             this.toolStripLeftPanel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.toolStripLeftPanel.Location = new System.Drawing.Point(0, 0);
             this.toolStripLeftPanel.Name = "toolStripLeftPanel";
-            this.toolStripLeftPanel.Padding = new System.Windows.Forms.Padding(0);
+            this.toolStripLeftPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 12);
             this.toolStripLeftPanel.Size = new System.Drawing.Size(75, 657);
             this.toolStripLeftPanel.TabIndex = 0;
             this.toolStripLeftPanel.Text = "toolStrip1";
             // 
-            // cmdIcon
+            // cmdPortrait
             // 
-            this.cmdIcon.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.cmdIcon.Image = ((System.Drawing.Image)(resources.GetObject("cmdIcon.Image")));
-            this.cmdIcon.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cmdIcon.Name = "cmdIcon";
-            this.cmdIcon.Size = new System.Drawing.Size(74, 36);
-            this.cmdIcon.Text = "toolStripButton1";
+            this.cmdPortrait.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.cmdPortrait.Image = ((System.Drawing.Image)(resources.GetObject("cmdPortrait.Image")));
+            this.cmdPortrait.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdPortrait.Margin = new System.Windows.Forms.Padding(0, 1, 0, 20);
+            this.cmdPortrait.Name = "cmdPortrait";
+            this.cmdPortrait.Size = new System.Drawing.Size(74, 52);
+            this.cmdPortrait.Text = "toolStripButton1";
+            this.cmdPortrait.ToolTipText = "你自己...";
+            // 
+            // cmdChatUI
+            // 
+            this.cmdChatUI.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.cmdChatUI.Image = ((System.Drawing.Image)(resources.GetObject("cmdChatUI.Image")));
+            this.cmdChatUI.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdChatUI.Margin = new System.Windows.Forms.Padding(0, 1, 0, 20);
+            this.cmdChatUI.Name = "cmdChatUI";
+            this.cmdChatUI.Size = new System.Drawing.Size(74, 52);
+            this.cmdChatUI.Text = "toolStripButton1";
+            // 
+            // cmdGroup
+            // 
+            this.cmdGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.cmdGroup.Image = ((System.Drawing.Image)(resources.GetObject("cmdGroup.Image")));
+            this.cmdGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdGroup.Name = "cmdGroup";
+            this.cmdGroup.Size = new System.Drawing.Size(74, 52);
+            this.cmdGroup.Text = "toolStripButton1";
+            // 
+            // cmdSettings
+            // 
+            this.cmdSettings.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.cmdSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.cmdSettings.Image = ((System.Drawing.Image)(resources.GetObject("cmdSettings.Image")));
+            this.cmdSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdSettings.Name = "cmdSettings";
+            this.cmdSettings.Size = new System.Drawing.Size(74, 52);
+            this.cmdSettings.Text = "toolStripButton1";
             // 
             // tableLayoutPanelChatArea
             // 
@@ -134,9 +174,18 @@
             this.splitContainerChat.Panel2.Controls.Add(this.tableLayoutInputPanel);
             this.splitContainerChat.Panel2MinSize = 64;
             this.splitContainerChat.Size = new System.Drawing.Size(348, 584);
-            this.splitContainerChat.SplitterDistance = 458;
+            this.splitContainerChat.SplitterDistance = 470;
             this.splitContainerChat.SplitterWidth = 1;
             this.splitContainerChat.TabIndex = 0;
+            // 
+            // chatUI
+            // 
+            this.chatUI.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chatUI.Location = new System.Drawing.Point(0, 0);
+            this.chatUI.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chatUI.Name = "chatUI";
+            this.chatUI.Size = new System.Drawing.Size(346, 468);
+            this.chatUI.TabIndex = 0;
             // 
             // tableLayoutInputPanel
             // 
@@ -151,7 +200,7 @@
             this.tableLayoutInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.tableLayoutInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this.tableLayoutInputPanel.Size = new System.Drawing.Size(346, 123);
+            this.tableLayoutInputPanel.Size = new System.Drawing.Size(346, 111);
             this.tableLayoutInputPanel.TabIndex = 0;
             // 
             // cmdSend
@@ -161,7 +210,7 @@
             this.cmdSend.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.cmdSend.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Green;
             this.cmdSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdSend.Location = new System.Drawing.Point(256, 82);
+            this.cmdSend.Location = new System.Drawing.Point(256, 70);
             this.cmdSend.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdSend.Name = "cmdSend";
             this.cmdSend.Size = new System.Drawing.Size(87, 37);
@@ -295,14 +344,11 @@
             this.imgContainer64x64.ImageSize = new System.Drawing.Size(64, 64);
             this.imgContainer64x64.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // chatUI
+            // imgContainer48x48
             // 
-            this.chatUI.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chatUI.Location = new System.Drawing.Point(0, 0);
-            this.chatUI.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.chatUI.Name = "chatUI";
-            this.chatUI.Size = new System.Drawing.Size(346, 456);
-            this.chatUI.TabIndex = 0;
+            this.imgContainer48x48.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.imgContainer48x48.ImageSize = new System.Drawing.Size(48, 48);
+            this.imgContainer48x48.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // OCForm
             // 
@@ -340,7 +386,7 @@
         private System.Windows.Forms.SplitContainer splitContainerChat;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelConversation;
         private System.Windows.Forms.ListView lvConversations;
-        private System.Windows.Forms.ToolStripButton cmdIcon;
+        private System.Windows.Forms.ToolStripButton cmdPortrait;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelSysmenu;
         private System.Windows.Forms.Button sysCmdClose;
         private System.Windows.Forms.Button sysCmdMaximize;
@@ -352,6 +398,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutInputPanel;
         private System.Windows.Forms.Button cmdSend;
         private ChatUI chatUI;
+        private System.Windows.Forms.ToolStripButton cmdChatUI;
+        private System.Windows.Forms.ToolStripButton cmdGroup;
+        private System.Windows.Forms.ToolStripButton cmdSettings;
+        private System.Windows.Forms.ImageList imgContainer48x48;
     }
 }
 

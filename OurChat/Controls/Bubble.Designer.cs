@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             this.Layout = new System.Windows.Forms.TableLayoutPanel();
             this.Portrait = new System.Windows.Forms.PictureBox();
-            this.rtx = new System.Windows.Forms.RichTextBox();
+            this.rtx = new OurChat.RichTextBoxEx();
             this.Layout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Portrait)).BeginInit();
             this.SuspendLayout();
@@ -36,7 +36,7 @@
             this.Layout.ColumnCount = 3;
             this.Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.5F));
             this.Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.5F));
-            this.Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.Layout.Controls.Add(this.Portrait, 1, 0);
             this.Layout.Controls.Add(this.rtx, 0, 0);
             this.Layout.Location = new System.Drawing.Point(52, 0);
@@ -51,7 +51,7 @@
             // 
             this.Portrait.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.Portrait.BackColor = System.Drawing.Color.White;
-            this.Portrait.Location = new System.Drawing.Point(180, 55);
+            this.Portrait.Location = new System.Drawing.Point(176, 55);
             this.Portrait.Margin = new System.Windows.Forms.Padding(0);
             this.Portrait.MaximumSize = new System.Drawing.Size(32, 32);
             this.Portrait.MinimumSize = new System.Drawing.Size(32, 32);
@@ -66,6 +66,7 @@
             this.rtx.AutoWordSelection = true;
             this.rtx.BackColor = System.Drawing.Color.White;
             this.rtx.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtx.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.rtx.DetectUrls = false;
             this.rtx.ForeColor = System.Drawing.Color.White;
             this.rtx.Location = new System.Drawing.Point(1, 1);
@@ -73,8 +74,9 @@
             this.rtx.Name = "rtx";
             this.rtx.ReadOnly = true;
             this.rtx.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.rtx.Size = new System.Drawing.Size(90, 133);
+            this.rtx.Size = new System.Drawing.Size(88, 133);
             this.rtx.TabIndex = 2;
+            this.rtx.TabStop = false;
             this.rtx.Text = "";
             this.rtx.Visible = false;
             // 
@@ -98,6 +100,6 @@
 
         private System.Windows.Forms.TableLayoutPanel Layout;
         private System.Windows.Forms.PictureBox Portrait;
-        private System.Windows.Forms.RichTextBox rtx;
+        private RichTextBoxEx rtx;
     }
 }

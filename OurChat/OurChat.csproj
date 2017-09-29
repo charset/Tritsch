@@ -65,6 +65,12 @@
     <Compile Include="Controls\ChatUI.Designer.cs">
       <DependentUpon>ChatUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\RichTextBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\RichTextBoxEx.Designer.cs">
+      <DependentUpon>RichTextBoxEx.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConversationShortcut.cs" />
     <Compile Include="Messaging\Handler.cs" />
     <Compile Include="OCForm.cs">

@@ -55,6 +55,8 @@ namespace OurChat {
 
             RegisterOwnerDraw();
 
+            LoadLeftPanel();
+
             lvConversations.Items.AddRange(new ListViewItem[] {
                 new ListViewItem("1"){Tag = new ConversationShortcut(){Icon = Guid.NewGuid(), DisplayName="姓名1", LastUpdate = DateTime.Now, PeekMessage = "Message1", IsMute = true } },
                 new ListViewItem("2"){Tag = new ConversationShortcut(){Icon = Guid.NewGuid(), DisplayName="Name2", LastUpdate = DateTime.Now, PeekMessage = "\ue136", IsMute = true } },
@@ -99,18 +101,20 @@ namespace OurChat {
             });
 
             ThreadPool.QueueUserWorkItem(state => {
-                SubscriberSocket subscriber = null;
-                //Handle Subscriber
-                subscriber.SubscribeToAnyTopic();
-                Msg msg = new Msg();
-                while (true) {
-                    subscriber.TryReceive(ref msg, TimeSpan.MaxValue);
-                    using (MemoryStream ms = new MemoryStream(msg.Data)) {
-                        BinaryFormatter bf = new BinaryFormatter();
-                        Messaging.Message groupMessage = bf.Deserialize(ms) as Messaging.Message;
-                        if (groupMessage == null) continue;
-                        if (!groupMessage.MessageType.HasFlag(Messaging.MessageType.MT_GROUP_FLAG)) continue;
-                        Guid from = groupMessage.From;
+                using (SubscriberSocket subscriber = new SubscriberSocket()) {
+                    subscriber.Bind($"tcp://localhost:12555");
+                    //Handle Subscriber
+                    subscriber.SubscribeToAnyTopic();
+                    Msg msg = new Msg(); msg.InitEmpty();
+                    while (true) {
+                        subscriber.TryReceive(ref msg, TimeSpan.MaxValue);
+                        using (MemoryStream ms = new MemoryStream(msg.Data)) {
+                            BinaryFormatter bf = new BinaryFormatter();
+                            Messaging.Message groupMessage = bf.Deserialize(ms) as Messaging.Message;
+                            if (groupMessage == null) continue;
+                            if (!groupMessage.MessageType.HasFlag(Messaging.MessageType.MT_GROUP_FLAG)) continue;
+                            Guid from = groupMessage.From;
+                        }
                     }
                 }
             });
@@ -125,7 +129,9 @@ namespace OurChat {
                     client.Connect($">tcp://0x{membership.LastLoginIP:X}:12553");
                     string ____ = "-------------------";
                     byte[] data = Encoding.UTF8.GetBytes(____);
-                    Messaging.Message m = new Messaging.Message(1, from, TO, Guid.Empty, TimeSpan.FromMinutes(1D), false, new Guid(), Messaging.MessageType.MT_PLAINTEXT, data.Length, data);
+                    Messaging.Message m = new Messaging.Message(1, from, TO, Guid.Empty, 
+                        TimeSpan.FromMinutes(1D), false, new Guid(), 
+                        Messaging.MessageType.MT_PLAINTEXT, data.Length, data);
                     using (MemoryStream ms = new MemoryStream()) {
                         BinaryFormatter bf = new BinaryFormatter();
                         bf.Serialize(ms, m); data = ms.ToArray();
@@ -144,7 +150,18 @@ namespace OurChat {
         }
 
         private void LoadLeftPanel() {
-            //Portrit
+            //Portrait
+            
+            var image = Image.FromFile(@"D:\desktop\微信图片_20170910110136.jpg");
+            cmdPortrait.Image = image;
+            cmdPortrait.MouseEnter += (sender, @event) => { Cursor = Cursors.Hand; };
+            cmdPortrait.MouseLeave += (sender, @event) => { Cursor = Cursors.Arrow; };
+            //0. Load Local Cache File: Guid.png
+            //1. Query Server to obtain member:me
+            //2. Load Default File: DefaultPortrait.png
+            //1.1 Load Contract List
+            //1.2 Load Group List
+            //1.3 Load 
         }
 
         private void RegisterSysCommandBehavior() {

@@ -5,10 +5,12 @@ OURCHAT 设计说明书
 	考虑使用0MQ通讯。
 
 	发送者:
+	<code>
 		var client = new RequestSocket($"tcp://{Util.Find(targetGuid).LastLogonIP}:12553");
 		client.Connect();
 		client.Send(message);
 		var reply = client.Receive();
+	</code>
 
 02. 服务器通讯
     使用0MQ进行通讯

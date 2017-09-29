@@ -9,16 +9,20 @@ namespace OurChat {
 
         public Guid Target { get { return target; } }
 
-        public ChatUI(Guid target) {
+        public ChatUI() {
             InitializeComponent();
 
-            this.target = target;
+            target = new Guid();
 
             SizeChanged += (sender, @event) => {
                 foreach (Control c in flowLp.Controls) {
                     c.Width = Width - 8;
                 }
             };
+        }
+
+        public ChatUI(Guid target) : this() {
+            this.target = target;
         }
 
         public void AddMessage(Guid portait, string rtxContent, bool portaitLeft = true) {

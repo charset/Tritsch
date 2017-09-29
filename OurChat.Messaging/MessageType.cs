@@ -38,6 +38,6 @@ namespace OurChat.Messaging {
         MT_MEMBER_LOGOUT = 0x0000_000A,
 
 
-        MT_GROUP_FLAG = 0x0000_0000,
+        MT_GROUP_FLAG = 0x4000_0000,
     }
 }
