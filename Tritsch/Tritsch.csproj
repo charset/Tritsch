@@ -56,11 +56,11 @@
     <Compile Include="ProxyService.Designer.cs">
       <DependentUpon>ProxyService.cs</DependentUpon>
     </Compile>
-    <Compile Include="Service1.cs">
+    <Compile Include="MembershipService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Service1.Designer.cs">
-      <DependentUpon>Service1.cs</DependentUpon>
+    <Compile Include="MembershipService.Designer.cs">
+      <DependentUpon>MembershipService.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,6 +68,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OurChat.Messaging\OurChat.Messaging.csproj">
+      <Project>{60b57963-b324-4469-8148-f558171454d8}</Project>
+      <Name>OurChat.Messaging</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

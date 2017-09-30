@@ -2,6 +2,7 @@
 using System.Drawing;
 
 namespace OurChat.Messaging {
+    [Serializable]
     public class Membership {
         public Guid ID { get; set; }
         public string Name { get; set; }
@@ -11,7 +12,8 @@ namespace OurChat.Messaging {
 
         public UInt32 LastLoginIP { get; set; }
         public int SuccessfullyLoginCount { get; set; }
-        public Bitmap Portrait { get; set; }
+        public int PortraitID { get; set; }
+        public byte[] CustomPortrait { get; set; }
         public string NickName { get; set; }
     }
 }

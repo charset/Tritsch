@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -61,6 +62,20 @@ namespace OurChat.Messaging {
             MessageID = messageID; MessageType = messageType;
             Length = length; Content = content;
             Created = DateTime.Now;
+        }
+
+        private static BinaryFormatter bf = new BinaryFormatter();
+        public static Message Deserialize(byte[] b) {
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream(b)) {
+                return bf.Deserialize(ms) as Message;
+            }
+        }
+
+        public static byte[] Serialize(Message message) {
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream()) {
+                bf.Serialize(ms, message);
+                return ms.ToArray();
+            }
         }
     }
 }

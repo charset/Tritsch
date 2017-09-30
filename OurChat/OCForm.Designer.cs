@@ -31,32 +31,37 @@ namespace OurChat {
             this.toolStripLeftPanel = new System.Windows.Forms.ToolStrip();
             this.cmdPortrait = new System.Windows.Forms.ToolStripButton();
             this.cmdChatUI = new System.Windows.Forms.ToolStripButton();
-            this.cmdGroup = new System.Windows.Forms.ToolStripButton();
             this.cmdSettings = new System.Windows.Forms.ToolStripButton();
+            this.cmdContacts = new System.Windows.Forms.ToolStripButton();
+            this.cmdNull = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanelChatArea = new System.Windows.Forms.TableLayoutPanel();
             this.splitContainerChat = new System.Windows.Forms.SplitContainer();
-            this.chatUI = new OurChat.ChatUI();
             this.tableLayoutInputPanel = new System.Windows.Forms.TableLayoutPanel();
             this.cmdSend = new System.Windows.Forms.Button();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.flowLayoutPanelSysmenu = new System.Windows.Forms.FlowLayoutPanel();
             this.sysCmdClose = new System.Windows.Forms.Button();
             this.sysCmdMaximize = new System.Windows.Forms.Button();
             this.sysCmdMinimize = new System.Windows.Forms.Button();
             this.sysCmdPin = new System.Windows.Forms.Button();
+            this.lblInfo = new System.Windows.Forms.Label();
             this.tableLayoutPanelConversation = new System.Windows.Forms.TableLayoutPanel();
             this.lvConversations = new System.Windows.Forms.ListView();
             this.imgContainer16x16 = new System.Windows.Forms.ImageList(this.components);
             this.imgContainer32x32 = new System.Windows.Forms.ImageList(this.components);
             this.imgContainer64x64 = new System.Windows.Forms.ImageList(this.components);
             this.imgContainer48x48 = new System.Windows.Forms.ImageList(this.components);
+            this.rtxInput = new System.Windows.Forms.RichTextBox();
             this.tableLayoutPanelMain.SuspendLayout();
             this.toolStripLeftPanel.SuspendLayout();
             this.tableLayoutPanelChatArea.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerChat)).BeginInit();
-            this.splitContainerChat.Panel1.SuspendLayout();
             this.splitContainerChat.Panel2.SuspendLayout();
             this.splitContainerChat.SuspendLayout();
             this.tableLayoutInputPanel.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanelSysmenu.SuspendLayout();
             this.tableLayoutPanelConversation.SuspendLayout();
             this.SuspendLayout();
@@ -88,8 +93,9 @@ namespace OurChat {
             this.toolStripLeftPanel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmdPortrait,
             this.cmdChatUI,
-            this.cmdGroup,
-            this.cmdSettings});
+            this.cmdSettings,
+            this.cmdContacts,
+            this.cmdNull});
             this.toolStripLeftPanel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.toolStripLeftPanel.Location = new System.Drawing.Point(0, 0);
             this.toolStripLeftPanel.Name = "toolStripLeftPanel";
@@ -107,7 +113,7 @@ namespace OurChat {
             this.cmdPortrait.Name = "cmdPortrait";
             this.cmdPortrait.Size = new System.Drawing.Size(74, 52);
             this.cmdPortrait.Text = "toolStripButton1";
-            this.cmdPortrait.ToolTipText = "你自己...";
+            this.cmdPortrait.ToolTipText = "你自己";
             // 
             // cmdChatUI
             // 
@@ -117,16 +123,7 @@ namespace OurChat {
             this.cmdChatUI.Margin = new System.Windows.Forms.Padding(0, 1, 0, 20);
             this.cmdChatUI.Name = "cmdChatUI";
             this.cmdChatUI.Size = new System.Drawing.Size(74, 52);
-            this.cmdChatUI.Text = "toolStripButton1";
-            // 
-            // cmdGroup
-            // 
-            this.cmdGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.cmdGroup.Image = ((System.Drawing.Image)(resources.GetObject("cmdGroup.Image")));
-            this.cmdGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cmdGroup.Name = "cmdGroup";
-            this.cmdGroup.Size = new System.Drawing.Size(74, 52);
-            this.cmdGroup.Text = "toolStripButton1";
+            this.cmdChatUI.Text = "当前会话";
             // 
             // cmdSettings
             // 
@@ -136,7 +133,27 @@ namespace OurChat {
             this.cmdSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cmdSettings.Name = "cmdSettings";
             this.cmdSettings.Size = new System.Drawing.Size(74, 52);
-            this.cmdSettings.Text = "toolStripButton1";
+            this.cmdSettings.Text = "设置";
+            // 
+            // cmdContacts
+            // 
+            this.cmdContacts.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.cmdContacts.Image = ((System.Drawing.Image)(resources.GetObject("cmdContacts.Image")));
+            this.cmdContacts.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdContacts.Margin = new System.Windows.Forms.Padding(0, 1, 0, 20);
+            this.cmdContacts.Name = "cmdContacts";
+            this.cmdContacts.Size = new System.Drawing.Size(74, 52);
+            this.cmdContacts.Text = "熟知的联系人";
+            // 
+            // cmdNull
+            // 
+            this.cmdNull.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.cmdNull.Image = ((System.Drawing.Image)(resources.GetObject("cmdNull.Image")));
+            this.cmdNull.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cmdNull.Name = "cmdNull";
+            this.cmdNull.Size = new System.Drawing.Size(74, 52);
+            this.cmdNull.Text = "占位";
+            this.cmdNull.Visible = false;
             // 
             // tableLayoutPanelChatArea
             // 
@@ -144,6 +161,7 @@ namespace OurChat {
             this.tableLayoutPanelChatArea.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelChatArea.Controls.Add(this.splitContainerChat, 0, 2);
             this.tableLayoutPanelChatArea.Controls.Add(this.flowLayoutPanelSysmenu, 0, 0);
+            this.tableLayoutPanelChatArea.Controls.Add(this.lblInfo, 0, 1);
             this.tableLayoutPanelChatArea.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelChatArea.Location = new System.Drawing.Point(377, 4);
             this.tableLayoutPanelChatArea.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -167,40 +185,33 @@ namespace OurChat {
             // 
             // splitContainerChat.Panel1
             // 
-            this.splitContainerChat.Panel1.Controls.Add(this.chatUI);
+            this.splitContainerChat.Panel1.BackColor = System.Drawing.Color.White;
             // 
             // splitContainerChat.Panel2
             // 
             this.splitContainerChat.Panel2.Controls.Add(this.tableLayoutInputPanel);
-            this.splitContainerChat.Panel2MinSize = 64;
+            this.splitContainerChat.Panel2MinSize = 128;
             this.splitContainerChat.Size = new System.Drawing.Size(348, 584);
-            this.splitContainerChat.SplitterDistance = 470;
+            this.splitContainerChat.SplitterDistance = 455;
             this.splitContainerChat.SplitterWidth = 1;
             this.splitContainerChat.TabIndex = 0;
-            // 
-            // chatUI
-            // 
-            this.chatUI.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chatUI.Location = new System.Drawing.Point(0, 0);
-            this.chatUI.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.chatUI.Name = "chatUI";
-            this.chatUI.Size = new System.Drawing.Size(346, 468);
-            this.chatUI.TabIndex = 0;
             // 
             // tableLayoutInputPanel
             // 
             this.tableLayoutInputPanel.ColumnCount = 1;
             this.tableLayoutInputPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutInputPanel.Controls.Add(this.cmdSend, 0, 2);
+            this.tableLayoutInputPanel.Controls.Add(this.flowLayoutPanel1, 0, 0);
+            this.tableLayoutInputPanel.Controls.Add(this.rtxInput, 0, 1);
             this.tableLayoutInputPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutInputPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutInputPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutInputPanel.Name = "tableLayoutInputPanel";
             this.tableLayoutInputPanel.RowCount = 3;
-            this.tableLayoutInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this.tableLayoutInputPanel.Size = new System.Drawing.Size(346, 111);
+            this.tableLayoutInputPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutInputPanel.Size = new System.Drawing.Size(346, 126);
             this.tableLayoutInputPanel.TabIndex = 0;
             // 
             // cmdSend
@@ -210,13 +221,54 @@ namespace OurChat {
             this.cmdSend.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.cmdSend.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Green;
             this.cmdSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdSend.Location = new System.Drawing.Point(256, 70);
+            this.cmdSend.Location = new System.Drawing.Point(274, 98);
             this.cmdSend.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdSend.Name = "cmdSend";
-            this.cmdSend.Size = new System.Drawing.Size(87, 37);
+            this.cmdSend.Size = new System.Drawing.Size(69, 24);
             this.cmdSend.TabIndex = 0;
             this.cmdSend.Text = "发送(&S)";
             this.cmdSend.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.button1);
+            this.flowLayoutPanel1.Controls.Add(this.button2);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(346, 32);
+            this.flowLayoutPanel1.TabIndex = 1;
+            // 
+            // button1
+            // 
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(0, 0);
+            this.button1.Margin = new System.Windows.Forms.Padding(0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(31, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = ":)";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(31, 0);
+            this.button2.Margin = new System.Windows.Forms.Padding(0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(23, 23);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "F";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanelSysmenu
             // 
@@ -295,32 +347,46 @@ namespace OurChat {
             this.sysCmdPin.Text = "`";
             this.sysCmdPin.UseVisualStyleBackColor = true;
             // 
+            // lblInfo
+            // 
+            this.lblInfo.AutoSize = true;
+            this.lblInfo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblInfo.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblInfo.Location = new System.Drawing.Point(3, 23);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Size = new System.Drawing.Size(348, 34);
+            this.lblInfo.TabIndex = 2;
+            this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // tableLayoutPanelConversation
             // 
             this.tableLayoutPanelConversation.ColumnCount = 1;
             this.tableLayoutPanelConversation.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelConversation.Controls.Add(this.lvConversations, 0, 1);
             this.tableLayoutPanelConversation.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelConversation.Location = new System.Drawing.Point(78, 4);
-            this.tableLayoutPanelConversation.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tableLayoutPanelConversation.Location = new System.Drawing.Point(75, 4);
+            this.tableLayoutPanelConversation.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this.tableLayoutPanelConversation.Name = "tableLayoutPanelConversation";
             this.tableLayoutPanelConversation.RowCount = 2;
             this.tableLayoutPanelConversation.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 57F));
             this.tableLayoutPanelConversation.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelConversation.Size = new System.Drawing.Size(293, 649);
+            this.tableLayoutPanelConversation.Size = new System.Drawing.Size(299, 653);
             this.tableLayoutPanelConversation.TabIndex = 3;
             // 
             // lvConversations
             // 
-            this.lvConversations.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lvConversations.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.lvConversations.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lvConversations.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvConversations.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.lvConversations.Location = new System.Drawing.Point(3, 61);
-            this.lvConversations.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.lvConversations.Location = new System.Drawing.Point(0, 57);
+            this.lvConversations.Margin = new System.Windows.Forms.Padding(0);
             this.lvConversations.MultiSelect = false;
             this.lvConversations.Name = "lvConversations";
             this.lvConversations.OwnerDraw = true;
-            this.lvConversations.Size = new System.Drawing.Size(287, 584);
+            this.lvConversations.Size = new System.Drawing.Size(299, 596);
             this.lvConversations.TabIndex = 0;
             this.lvConversations.TileSize = new System.Drawing.Size(220, 48);
             this.lvConversations.UseCompatibleStateImageBehavior = false;
@@ -350,6 +416,18 @@ namespace OurChat {
             this.imgContainer48x48.ImageSize = new System.Drawing.Size(48, 48);
             this.imgContainer48x48.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // rtxInput
+            // 
+            this.rtxInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtxInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtxInput.EnableAutoDragDrop = true;
+            this.rtxInput.Location = new System.Drawing.Point(0, 32);
+            this.rtxInput.Margin = new System.Windows.Forms.Padding(0);
+            this.rtxInput.Name = "rtxInput";
+            this.rtxInput.Size = new System.Drawing.Size(346, 62);
+            this.rtxInput.TabIndex = 2;
+            this.rtxInput.Text = "";
+            // 
             // OCForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -361,17 +439,18 @@ namespace OurChat {
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "OCForm";
-            this.Text = "讨厌鬼乐乐";
+            this.Text = "雅言";
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
             this.toolStripLeftPanel.ResumeLayout(false);
             this.toolStripLeftPanel.PerformLayout();
             this.tableLayoutPanelChatArea.ResumeLayout(false);
-            this.splitContainerChat.Panel1.ResumeLayout(false);
+            this.tableLayoutPanelChatArea.PerformLayout();
             this.splitContainerChat.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerChat)).EndInit();
             this.splitContainerChat.ResumeLayout(false);
             this.tableLayoutInputPanel.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanelSysmenu.ResumeLayout(false);
             this.tableLayoutPanelConversation.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -397,11 +476,16 @@ namespace OurChat {
         private System.Windows.Forms.ImageList imgContainer64x64;
         private System.Windows.Forms.TableLayoutPanel tableLayoutInputPanel;
         private System.Windows.Forms.Button cmdSend;
-        private ChatUI chatUI;
         private System.Windows.Forms.ToolStripButton cmdChatUI;
-        private System.Windows.Forms.ToolStripButton cmdGroup;
+        private System.Windows.Forms.ToolStripButton cmdNull;
         private System.Windows.Forms.ToolStripButton cmdSettings;
         private System.Windows.Forms.ImageList imgContainer48x48;
+        private System.Windows.Forms.Label lblInfo;
+        private System.Windows.Forms.ToolStripButton cmdContacts;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.RichTextBox rtxInput;
     }
 }
 

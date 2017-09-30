@@ -14,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections.Concurrent;
+using OurChat.Messaging;
 
 namespace OurChat {
     public partial class OCForm : Form {
@@ -26,7 +27,7 @@ namespace OurChat {
         static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
         #endregion
 
-        private ConcurrentQueue<Message> messages;
+        //private ConcurrentQueue<Message> messages;
 
         private WindowsFormsSynchronizationContext sc = null;
 
@@ -49,13 +50,18 @@ namespace OurChat {
             InitializeComponent();
 
             flowLayoutPanelSysmenu.MouseDown += MoveWindow;
+            flowLayoutPanelSysmenu.DoubleClick += ResizeWindow;
             toolStripLeftPanel.MouseDown += MoveWindow;
+            toolStripLeftPanel.DoubleClick += ResizeWindow;
 
             RegisterSysCommandBehavior();
 
             RegisterOwnerDraw();
 
             LoadLeftPanel();
+
+            //Random randomGen = new Random();
+            //KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
 
             lvConversations.Items.AddRange(new ListViewItem[] {
                 new ListViewItem("1"){Tag = new ConversationShortcut(){Icon = Guid.NewGuid(), DisplayName="姓名1", LastUpdate = DateTime.Now, PeekMessage = "Message1", IsMute = true } },
@@ -74,12 +80,18 @@ namespace OurChat {
                 new ListViewItem("2"){Tag = new ConversationShortcut(){Icon = Guid.NewGuid(), DisplayName="Name2", LastUpdate = DateTime.Now, PeekMessage = "\ue139", IsMute = true } },
                 new ListViewItem("3"){Tag = new ConversationShortcut(){Icon = Guid.NewGuid(), DisplayName="Name3", LastUpdate = DateTime.Now, PeekMessage = "消息～3", IsMute = true } },
             });
+            for(int i = 0; i < lvConversations.Items.Count; i++) {
+                var shortcut = lvConversations.Items[i].Tag as ConversationShortcut;
+                var chatUI = GetChatUI(shortcut.Icon);
+                chatrooms.AddOrUpdate(shortcut.Icon.ToString(), chatUI, (key, value) => chatUI);
+                //chatUI.BackColor = Color.FromKnownColor(names[randomGen.Next(names.Length)]);
+            }
 
-            chatUI.AddMessage(Guid.Empty, "你好,祝你生日快乐!");
+            /*chatUI.AddMessage(Guid.Empty, "你好,祝你生日快乐!");
             chatUI.AddMessage(Guid.Empty, "你是？", false);
             chatUI.AddMessage(Guid.Empty, "我是你的小号啊");
             chatUI.AddMessage(Guid.Empty, ":-( 伐开熏 ...", false);
-
+            */
             Messaging.Message message = null;
             ThreadPool.QueueUserWorkItem(state => {
                 //Get Message From 0MQ
@@ -119,6 +131,10 @@ namespace OurChat {
                 }
             });
 
+            ThreadPool.QueueUserWorkItem(state => {
+                new FakeServer().Init();
+            });
+
             cmdSend.Click += (sender, @event) => {
                 if (ActiveChatUI == null) return;
 
@@ -138,9 +154,60 @@ namespace OurChat {
                         msg.Put(data, 0, data.Length);
                     }
                     client.Send(ref msg, false);
+                    //Clear Input
                     sendEvent.Set();
                 }
             };
+
+            lvConversations.Click += (sender, @event) => {
+                if (lvConversations.SelectedIndices.Count == 0) return;
+                int selectedIndex = lvConversations.SelectedIndices[0];
+
+                var shortcut = lvConversations.Items[selectedIndex].Tag as ConversationShortcut;
+                if (shortcut == null) return;
+
+                ChatUI chatUI = GetChatUI(shortcut.Icon);
+
+                for (int i = 0; i < splitContainerChat.Panel1.Controls.Count; i++) {
+                    splitContainerChat.Panel1.Controls[i].Visible = (chatUI == splitContainerChat.Panel1.Controls[i]);
+                }
+                ActiveChatUI = chatUI;
+                lblInfo.Text = shortcut.DisplayName;
+            };
+
+            lblInfo.Click += (sender, @event) => {
+                Msg m = new Msg();// m.InitEmpty();
+                string info = new Guid().ToString();
+                byte[] b = Encoding.Default.GetBytes(info);
+                Messaging.Message _message = new Messaging.Message(1, new Guid(), new Guid(), Guid.Empty, TimeSpan.MaxValue, false, new Guid(),
+                    Messaging.MessageType.MT_MEMBER_FLAG | Messaging.MessageType.MT_MEMBER_INFO, b.Length, b);
+                b = Messaging.Message.Serialize(_message);
+                m.InitPool(b.Length); m.Put(b, 0, b.Length);
+                using (var client = new RequestSocket()) {
+                    client.Connect("tcp://localhost:12553");
+                    client.Send(ref m, false);
+                    Msg mm = new Msg(); mm.InitEmpty();
+                    client.Receive(ref mm);
+                    Messaging.Message reply = Messaging.Message.Deserialize(mm.Data);
+                    using (MemoryStream ms = new MemoryStream(reply.Content)) {
+                        BinaryFormatter bf = new BinaryFormatter();
+                        var membership = bf.Deserialize(ms) as Membership;
+                        MessageBox.Show($"{membership.ID}\n{membership.Name}\n{membership.NickName}\n{membership.LastLoginIP}");
+                    }
+                }
+            };
+        }
+
+        private ChatUI GetChatUI(Guid guid) {
+            string _ = guid.ToString();
+            return chatrooms.ContainsKey(_) ? chatrooms[_] : AddNewChatUI(guid);
+        }
+
+        private ChatUI AddNewChatUI(Guid guid) {
+            ChatUI chatUI = new ChatUI(guid); splitContainerChat.Panel1.Controls.Add(chatUI);
+            chatUI.Dock = DockStyle.Fill; chatUI.Visible = false;
+            chatrooms.TryAdd(guid.ToString(), chatUI);
+            return chatUI;
         }
 
         private void MoveWindow(object sender, MouseEventArgs e) {
@@ -149,19 +216,39 @@ namespace OurChat {
             SendMessage(Handle, 0x0112, 0xF012, 0);
         }
 
+        private void ResizeWindow(object sender, EventArgs e) {
+            switch (WindowState) {
+                case FormWindowState.Minimized:
+                case FormWindowState.Normal:
+                    WindowState = FormWindowState.Maximized;
+                    break;
+                case FormWindowState.Maximized:
+                    WindowState = FormWindowState.Normal;
+                    break;
+            }
+        }
+
         private void LoadLeftPanel() {
+            toolStripLeftPanel.MouseEnter += (sender, @event) => { Cursor = Cursors.Hand; };
+            toolStripLeftPanel.MouseLeave += (sender, @event) => { Cursor = Cursors.Arrow; };
             //Portrait
-            
-            var image = Image.FromFile(@"D:\desktop\微信图片_20170910110136.jpg");
-            cmdPortrait.Image = image;
-            cmdPortrait.MouseEnter += (sender, @event) => { Cursor = Cursors.Hand; };
-            cmdPortrait.MouseLeave += (sender, @event) => { Cursor = Cursors.Arrow; };
+            RedrawTask drawPortraitTask = new RedrawTask(cmdPortrait, @"D:\desktop\微信图片_20170910110136.jpg");
+            drawPortraitTask.Draw(100);
+
             //0. Load Local Cache File: Guid.png
             //1. Query Server to obtain member:me
             //2. Load Default File: DefaultPortrait.png
-            //1.1 Load Contract List
-            //1.2 Load Group List
-            //1.3 Load 
+            //1.1 Load Chat List
+            RedrawTask drawChatUITask = new RedrawTask(cmdChatUI, @"Content\chat_128px_1201530_easyicon.net.ico");
+            drawChatUITask.Draw(0);
+            //1.2 Load Contact List
+            RedrawTask drawContactTask = new RedrawTask(cmdContacts, @"Content\group_user_users_128px_4283_easyicon.net.ico");
+            drawContactTask.Draw(0);
+            //1.3 Load Null List
+            //1.4 Load Settings
+            RedrawTask drawSettingsTask = new RedrawTask(cmdSettings, @"Content\Settings_128px_1194826_easyicon.net.ico");
+            drawSettingsTask.Draw(0);
+            //cmdSettings.Image = Image.FromFile(@"Content\Settings_128px_1194826_easyicon.net.ico");
         }
 
         private void RegisterSysCommandBehavior() {
@@ -174,17 +261,7 @@ namespace OurChat {
                 WindowState = FormWindowState.Minimized;
             };
 
-            sysCmdMaximize.Click += (sender, @event) => {
-                switch (WindowState) {
-                    case FormWindowState.Minimized:
-                    case FormWindowState.Normal:
-                        WindowState = FormWindowState.Maximized;
-                        break;
-                    case FormWindowState.Maximized:
-                        WindowState = FormWindowState.Normal;
-                        break;
-                }
-            };
+            sysCmdMaximize.Click += ResizeWindow;
 
             sysCmdClose.Click += (sender, @event) => {
                 Close();
