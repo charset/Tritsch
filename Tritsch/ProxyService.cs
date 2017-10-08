@@ -11,7 +11,6 @@ using NetMQ;
 
 namespace Tritsch {
     partial class ProxyService : ServiceBase {
-        private NetMQ.Sockets.
         public ProxyService() {
             InitializeComponent();
         }

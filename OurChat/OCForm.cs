@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections.Concurrent;
 using OurChat.Messaging;
+using OurChat.Communication;
 
 namespace OurChat {
     public partial class OCForm : Form {
@@ -177,26 +178,23 @@ namespace OurChat {
 
             lblInfo.Click += (sender, @event) => {
                 Msg m = new Msg();// m.InitEmpty();
-                string info = new Guid().ToString();
-                byte[] b = Encoding.Default.GetBytes(info);
-                Messaging.Message _message = new Messaging.Message(1, new Guid(), new Guid(), Guid.Empty, TimeSpan.MaxValue, false, new Guid(),
-                    Messaging.MessageType.MT_MEMBER_FLAG | Messaging.MessageType.MT_MEMBER_INFO, b.Length, b);
-                b = Messaging.Message.Serialize(_message);
+                Messaging.Message _message = MessageFactory.CreateMemberInfoMessage(new Guid(), new Guid(), new Guid());
+                byte[] b = SerializerUtil<Messaging.Message>.Serialize(_message);
                 m.InitPool(b.Length); m.Put(b, 0, b.Length);
                 using (var client = new RequestSocket()) {
                     client.Connect("tcp://localhost:12553");
                     client.Send(ref m, false);
                     Msg mm = new Msg(); mm.InitEmpty();
                     client.Receive(ref mm);
-                    Messaging.Message reply = Messaging.Message.Deserialize(mm.Data);
-                    using (MemoryStream ms = new MemoryStream(reply.Content)) {
-                        BinaryFormatter bf = new BinaryFormatter();
-                        var membership = bf.Deserialize(ms) as Membership;
-                        MessageBox.Show($"{membership.ID}\n{membership.Name}\n{membership.NickName}\n{membership.LastLoginIP}");
-                    }
+                    var reply = SerializerUtil<Messaging.Message>.Deserialize(mm.Data);
+                    var response = SerializerUtil<MemberInfoResponse>.Deserialize(reply.Content);
+                    var membership = response.Membership;
+                    MessageBox.Show($"{membership.ID}\n{membership.Name}\n{membership.NickName}\n0x{membership.LastLoginIP :X08}");
                 }
             };
         }
+
+        private void PutMessage() { }
 
         private ChatUI GetChatUI(Guid guid) {
             string _ = guid.ToString();

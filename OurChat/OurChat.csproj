@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\ICacheable.cs" />
     <Compile Include="Controls\Bubble.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -73,7 +72,6 @@
     </Compile>
     <Compile Include="ConversationShortcut.cs" />
     <Compile Include="FakeServer.cs" />
-    <Compile Include="Messaging\Handler.cs" />
     <Compile Include="OCForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,7 +81,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedrawTask.cs" />
-    <Compile Include="Utilities\IconCache.cs" />
     <EmbeddedResource Include="Controls\Bubble.resx">
       <DependentUpon>Bubble.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -125,7 +122,11 @@
       <Name>OurChat.Messaging</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Cache\" />
+    <Folder Include="Messaging\" />
+    <Folder Include="Utilities\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Content\business_contact_128px_1101305_easyicon.net.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

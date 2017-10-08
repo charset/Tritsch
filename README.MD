@@ -5,19 +5,18 @@ OURCHAT 设计说明书
 	考虑使用0MQ通讯。
 
 	发送者:
-	<code>
 		var client = new RequestSocket($"tcp://{Util.Find(targetGuid).LastLogonIP}:12553");
 		client.Connect();
 		client.Send(message);
 		var reply = client.Receive();
-	</code>
-
+		
 02. 服务器通讯
     使用0MQ进行通讯
-	12553 客户端-服务器通讯使用端口
-	12554
-	12555 订阅-发布 使用端口
+	12553 客户端-服务器通讯使用端口  
+	12554  
+	12555 订阅-发布 使用端口  
 
+___
 03. 通讯原语
     1)  消息定义
 	Message: Source, Target, Proxy, Data
@@ -53,17 +52,19 @@ OURCHAT 设计说明书
 	`MT_MEMBER_INVITE` Content = <MemberInfo>
 	如果发起者是一个群, 则Content = Group, List<MemberInfo>
 
-	`MT_MEMBER_INVITE_REPLY` Content = Reference Message ID
+	`MT_MEMBER_INVITE_REPLY` Content = Reference Message ID  
 
-	`MT_MEMBER_REMOVE`
+	`MT_MEMBER_REMOVE`  
 
-	`MT_MEMBER_REMOVE_REPLY`
+	`MT_MEMBER_REMOVE_REPLY`  
 
-	`MT_MEMBER_GROUP_MODIFY` Content = Dictionary<Key, Value>
+	`MT_MEMBER_GROUP_MODIFY` Content = Dictionary<Key, Value>  
 
-	`MT_MEMBER_INFO` Content = GUID
+	`MT_MEMBER_INFO` Content = GUID  
 
-	`MT_MEMBER_INFO_REPLY` Content = <MemberInfo>
+	`MT_MEMBER_INFO_REPLY` Content = <MemberInfo>  
+
+	`MT_MEMBER_QUERY` Content = Filter : Name, List<Department>, NickName
 
 04. 显示控件
     使用一个FlowLayoutPanel来承载一个ChatUI, 自定义的控件.
